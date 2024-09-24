@@ -1,0 +1,12 @@
+body {
+    font-family: 'MyCustomFont', sans-serif;
+    margin: auto;
+    max-width: 90%;
+    padding: 2rem;
+    background-image: url('Assets/bg.jpg'); 
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    overflow-y: hidden; 
+    scrollbar-width: none;
+}

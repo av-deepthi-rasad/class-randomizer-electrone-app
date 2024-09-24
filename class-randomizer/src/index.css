@@ -1,7 +1,173 @@
+@font-face {
+  font-family: 'MyCustomFont';
+  src: url('Assets/Fonts/SOFIAPROSOFTBOLD.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif;
+  font-family: 'MyCustomFont', sans-serif;
   margin: auto;
-  max-width: 38rem;
+  max-width: 90%;
   padding: 2rem;
+  background-image: url('Assets/bg.jpg'); 
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  overflow-y: hidden; 
+  scrollbar-width: none;
+}
+
+.date-display {
+  position: absolute; /* Position it at the top left */
+  top: 10px;
+  left: 10px;
+  font-size: 20px;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.topic {
+  font-size: 25px;
+  margin-bottom: 30px;
+  text-align: center;
+  color: white;
+}
+
+/* Style for the navigation bar */
+.nav-bar {
+  background-color: #007bff;
+  border-radius: 30px;
+  height: 70px;
+  max-height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin-bottom: 40px;
+}
+
+/* Style for the buttons in the navigation bar */
+.nav-bar button {
+  padding: 10px 20px;
+  margin: 0 50px;
+  border: none;
+  border-radius: 30px;
+  height: 50px;
+  align-items: center;
+  font-size: 24px;
+  transition: background-color 0.4s;
+  font-family: 'MyCustomFont', sans-serif;
+}
+
+/* Hover effect for the buttons */
+.nav-bar button:hover {
+  background-color: #e904e9;
+  color: #3d3d3d;
+  cursor: pointer;
+}
+.no-clicked{
+  background-color: #515151;
+  color: white;
+}
+.clicked{
+  background-color: #e904e9;
+  color: #3d3d3d;
+}
+
+
+
+/* Styles for the add-student container */
+.add-student {
+  display: flex;
+  flex-direction:row;
+  align-items: center;
+  padding: 20px;
+  margin: 20px auto;
+  width: 500px;
+  gap: 10px;
+}
+
+/* Styles for the input field */
+.add-student input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 4px solid #e904e9;
+  border-radius: 20px;
+  font-size: 24px;
+  font-family: 'MyCustomFont', sans-serif;
+  box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
+/* Styles for the button */
+.add-student button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: #e904e9 solid 4px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 30px;
+  transition: background-color 0.3s;
+}
+
+.add-student button:hover {
+  background-color: #0056b3;
+}
+
+/* Styles for the student-list container */
+.student-list {
+  padding: 20px;
+  margin: 20px auto;
+  width: 550px;
+  max-height: 320px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+/* Styles for individual student items */
+.student-item {
+  display: flex; /* Use flexbox for layout */
+  justify-content: space-between; /* Space between items */
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-bottom: 4px solid #e904e9;
+  background-color: #007bff;
+  border-radius: 50px;
+  color: white;
+  font-size: 20px;
+}
+
+.student-item:last-child {
+  border-bottom: none;
+}
+
+/* Title style within student-list */
+.student-list h4 {
+  margin: 0;
+  padding-bottom: 10px;
+  font-size: 28px;
+  color: #333;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+}
+.student-item button {
+  background: #fd6464;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  padding: 5px 10px;
+  font-size: 16px;
+  border: rgb(53, 53, 53) solid 3px;
+}
+
+.student-item button:hover {
+  background: #db0202;
 }

@@ -1,0 +1,119 @@
+@font-face {
+    font-family: 'MyCustomFont';
+    src: url('Assets/Fonts/SOFIAPROSOFTBOLD.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+
+  body {
+    font-family: 'MyCustomFont', sans-serif;
+    margin: auto;
+    max-width: 90%;
+    padding: 2rem;
+    background-image: url('Assets/bg.jpg'); 
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    overflow-y: hidden; 
+    scrollbar-width: none;
+}
+  .date-display {
+    position: absolute; /* Position it at the top left */
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+    color: #ffffff;
+    font-weight: bold;
+  }
+  
+  .topic {
+    font-size: 25px;
+    margin-bottom: 30px;
+    text-align: center;
+    color: white;
+  }
+  
+  /* Style for the navigation bar */
+  .nav-bar {
+    background-color: #007bff;
+    border-radius: 30px;
+    height: 70px;
+    max-height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin-bottom: 40px;
+  }
+  
+  /* Style for the buttons in the navigation bar */
+  .nav-bar button {
+    padding: 10px 20px;
+    margin: 0 50px;
+    border: none;
+    border-radius: 30px;
+    height: 50px;
+    align-items: center;
+    font-size: 24px;
+    transition: background-color 0.4s;
+    font-family: 'MyCustomFont', sans-serif;
+  }
+  
+  /* Hover effect for the buttons */
+  .nav-bar button:hover {
+    background-color: #e904e9;
+    color: #3d3d3d;
+    cursor: pointer;
+  }
+  .no-clicked{
+    background-color: #515151;
+    color: white;
+  }
+  .clicked{
+    background-color: #e904e9;
+    color: #3d3d3d;
+  }
+  .student-item {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space between items */
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-bottom: 4px solid #e904e9;
+    background-color: #007bff;
+    border-radius: 50px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+.selected {
+    background-color: #ef61ff; /* Light green background for selected students */
+    color: rgb(62, 62, 62);
+}
+
+.count-text{
+    margin-bottom: 20px;
+    text-align: center;
+    color: white;
+
+  }
+  .student-list{
+    padding: 20px;
+    margin: 20px auto;
+    width: 500px;
+    max-height: 400px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    justify-content: space-between; /* Space between items */
+    align-items: center;
+
+  }
+
+  .student-list h2{
+    justify-content: space-between; /* Space between items */
+    align-items: center;
+    color: #2a2a2a;
+  }

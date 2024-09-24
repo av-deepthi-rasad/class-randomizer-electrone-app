@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Builder</title>
+  <link rel="stylesheet" href="select-student.css">
+</head>
+<body>
+
+  <div class="date-display" id="date-display"></div>
+
+  <div class="topic">
+    <h1>TEAM-BUILDER</h1>
+  </div>
+
+  <div class="nav-bar">
+    <button id="load-student-page" class="no-clicked">Add Student</button>
+    <button id="select-student-page" class="clicked">Select Student</button>
+    <button id="team-student-page" class="no-clicked">Teams</button>
+  </div>
+
+  <div class="count-text"><h2>Selected : (<span id="selected-count">0</span>)</h2></div>
+
+  <div class="student-list" id="student-list">
+    <!-- Students will be displayed here -->
+  </div>
+
+  <script>
+    // Function to display the current date
+    function displayDate() {
+      const dateElement = document.getElementById('date-display');
+      const today = new Date();
+      const formattedDate = today.toLocaleDateString('en-US', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+      dateElement.textContent = formattedDate;
+    }
+    displayDate();
+
+    // Function to load students from localStorage
+    function loadStudents() {
+      return JSON.parse(localStorage.getItem('students')) || [];
+    }
+
+    // Function to load selected students from localStorage
+    function loadSelectedStudents() {
+      return JSON.parse(localStorage.getItem('selectedStudents')) || [];
+    }
+
+    // Function to save selected students in localStorage
+    function saveSelectedStudents(selectedStudents) {
+      localStorage.setItem('selectedStudents', JSON.stringify(selectedStudents));
+    }
+
+    // Function to update the selected student count display
+    function updateSelectedCount() {
+      const selectedStudents = loadSelectedStudents();
+      const countElement = document.getElementById('selected-count');
+      countElement.textContent = selectedStudents.length;
+    }
+
+    // Function to display students in the student-list div
+    function displayStudents() {
+      const studentListDiv = document.getElementById('student-list');
+      const students = loadStudents();
+      const selectedStudents = loadSelectedStudents();
+
+      // Clear any existing student items before re-rendering
+      studentListDiv.innerHTML = '';
+
+      // Check if there are no students to show
+      if (students.length === 0) {
+        const noStudentMessage = document.createElement('h2');
+        noStudentMessage.textContent = 'No students available. Please add students.';
+        studentListDiv.appendChild(noStudentMessage);
+        return;
+      }
+
+      // Display each student as a list item or div
+      students.forEach(student => {
+        const studentDiv = document.createElement('div');
+        studentDiv.className = 'student-item';
+        studentDiv.textContent = student;
+
+        // If student is selected, add the selected class
+        if (selectedStudents.includes(student)) {
+          studentDiv.classList.add('selected');
+        }
+
+        // Add click event listener to toggle selection
+        studentDiv.addEventListener('click', function () {
+          toggleSelection(student, studentDiv);
+        });
+
+        studentListDiv.appendChild(studentDiv);
+      });
+
+      // Update the selected student count
+      updateSelectedCount();
+    }
+
+    // Function to toggle selection of a student
+    function toggleSelection(student, studentDiv) {
+      let selectedStudents = loadSelectedStudents();
+
+      if (selectedStudents.includes(student)) {
+        // If the student is already selected, remove from selectedStudents
+        selectedStudents = selectedStudents.filter(s => s !== student);
+        studentDiv.classList.remove('selected');
+      } else {
+        // If the student is not selected, add to selectedStudents
+        selectedStudents.push(student);
+        studentDiv.classList.add('selected');
+      }
+
+      // Save the updated selected students to localStorage
+      saveSelectedStudents(selectedStudents);
+
+      // Update the selected student count
+      updateSelectedCount();
+    }
+
+    // Navigate back to the Add Student page when the Add Student button is clicked
+    document.getElementById('load-student-page').addEventListener('click', function () {
+      window.location.href = 'index.html'; // Navigate to the index.html page
+    });
+    document.getElementById('team-student-page').addEventListener('click', function () {
+      window.location.href = 'teams.html'; // Navigate to the index.html page
+    });
+
+
+    // Display the students when the page loads
+    document.addEventListener('DOMContentLoaded', displayStudents);
+  </script>
+
+</body>
+</html>

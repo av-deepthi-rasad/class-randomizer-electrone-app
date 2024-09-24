@@ -1,12 +1,157 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Hello World!</title>
-    <link rel="stylesheet" href="index.css" />
-  </head>
-  <body>
-    <h1>💖 Hello World!</h1>
-    <p>Welcome to your Electron application.</p>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Builder</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <div class="date-display" id="date-display"></div>
+
+  <div class="topic">
+    <h1>TEAM-BUILDER</h1>
+  </div>
+
+  <div class="nav-bar">
+    <button id="load-student-page" class="clicked">Add Student</button>
+    <button id="select-student-page" class="no-clicked">Select Student</button>
+    <button id="team-student-page" class="no-clicked">Teams</button>
+  </div>
+
+  <div class="add-student">
+    <input type="text" id="student-name" placeholder="Enter Student Name">
+    <button id="submit-student">+</button>
+  </div>
+
+  <!-- Container for displaying the list of students -->
+  <div class="student-list" id="student-list">
+    <!-- Students will be added here dynamically -->
+    <h4>Student List (0)</h4>
+  </div>
+
+  <script>
+    function displayDate() {
+      const dateElement = document.getElementById('date-display');
+      const today = new Date();
+      const formattedDate = today.toLocaleDateString('en-US', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+      dateElement.textContent = formattedDate;
+    }
+    displayDate();
+
+    // Function to update student count in the heading
+    function updateStudentCount() {
+      const studentList = document.getElementById('student-list');
+      const studentItems = studentList.getElementsByClassName('student-item');
+      const studentCount = studentItems.length;
+      const heading = studentList.querySelector('h4');
+      heading.textContent = `Student List (${studentCount})`;
+    }
+
+    // Function to save students to localStorage
+    function saveStudents(students) {
+      localStorage.setItem('students', JSON.stringify(students));
+    }
+
+    // Function to load students from localStorage
+    function loadStudents() {
+      const students = JSON.parse(localStorage.getItem('students')) || [];
+      return students;
+    }
+
+    // Function to display students from localStorage
+    function displayStudents() {
+      const students = loadStudents();
+      const studentList = document.getElementById('student-list');
+
+      students.forEach((student) => {
+        const studentItem = document.createElement('div');
+        studentItem.className = 'student-item';
+
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = student;
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'X';
+        deleteButton.addEventListener('click', function () {
+          studentItem.remove();
+          removeStudent(student);
+          updateStudentCount();
+        });
+
+        studentItem.appendChild(nameSpan);
+        studentItem.appendChild(deleteButton);
+        studentList.appendChild(studentItem);
+      });
+
+      updateStudentCount();
+    }
+
+    // Function to remove a student from localStorage
+    function removeStudent(name) {
+      const students = loadStudents();
+      const filteredStudents = students.filter(student => student !== name);
+      saveStudents(filteredStudents);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      // Load and display students when page loads
+      displayStudents();
+
+      document.getElementById('submit-student').addEventListener('click', function () {
+        const studentName = document.getElementById('student-name').value.trim();
+
+        if (studentName) {
+          // Add student to localStorage
+          const students = loadStudents();
+          students.push(studentName);
+          saveStudents(students);
+
+          // Display the new student
+          const studentItem = document.createElement('div');
+          studentItem.className = 'student-item';
+
+          const nameSpan = document.createElement('span');
+          nameSpan.textContent = studentName;
+
+          const deleteButton = document.createElement('button');
+          deleteButton.textContent = 'X';
+          deleteButton.addEventListener('click', function () {
+            studentItem.remove();
+            removeStudent(studentName);
+            updateStudentCount();
+          });
+
+          studentItem.appendChild(nameSpan);
+          studentItem.appendChild(deleteButton);
+          document.getElementById('student-list').appendChild(studentItem);
+
+          // Clear input field and update student count
+          document.getElementById('student-name').value = '';
+          updateStudentCount();
+        } else {
+          alert('Please enter a student name.');
+        }
+      });
+
+      // Update student count on load
+      updateStudentCount();
+    });
+
+      document.getElementById('select-student-page').addEventListener('click', function () {
+    window.location.href = 'select-student.html'; // Navigate to the select-student.html page
+  });
+
+  document.getElementById('team-student-page').addEventListener('click', function () {
+      window.location.href = 'teams.html'; // Navigate to the index.html page
+    });
+
+
+
+  </script>
+
+</body>
 </html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Builder</title>
+  <link rel="stylesheet" href="teams.css">
+</head>
+<body>
+
+  <div class="date-display" id="date-display"></div>
+
+  <div class="topic">
+    <h1>TEAM-BUILDER</h1>
+  </div>
+
+  <div class="nav-bar">
+    <button id="load-student-page" class="no-clicked">Add Student</button>
+    <button id="select-student-page" class="no-clicked">Select Student</button>
+    <button id="team-student-page" class="clicked">Teams</button>
+  </div>
+  <div class="buttons">
+    <button id="btn-2-teams">2 Teams</button>
+    <button id="btn-3-teams">3 Teams</button>
+    <button id="btn-4-teams">4 Teams</button>
+    <button id="btn-5-teams">5 Teams</button>
+  </div>
+
+  <div class="groups" id="groups"></div>
+
+  <div id="shuffle-animation" class="hidden">
+    <img src="Assets/rocket.gif" alt="Shuffling..." />
+  </div>
+  <audio id="team-sound" src="Assets/space-attack-sound.wav"></audio>
+  <audio id="shuffle-sound" src="Assets/matching 22.wav"></audio>
+
+  
+
+  </div> 
+
+</div>
+
+  <script>
+  function displayDate() {
+      const dateElement = document.getElementById('date-display');
+      const today = new Date();
+      const formattedDate = today.toLocaleDateString('en-US', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+      dateElement.textContent = formattedDate;
+    }
+    displayDate();
+
+    // Function to load students from localStorage
+    function loadStudents() {
+      return JSON.parse(localStorage.getItem('students')) || [];
+    }
+
+    // Function to load selected students from localStorage
+    function loadSelectedStudents() {
+      return JSON.parse(localStorage.getItem('selectedStudents')) || [];
+    }
+
+    // Function to save selected students in localStorage
+    function saveSelectedStudents(selectedStudents) {
+      localStorage.setItem('selectedStudents', JSON.stringify(selectedStudents));
+    }
+
+    // Function to update the selected student count display
+    function updateSelectedCount() {
+      const selectedStudents = loadSelectedStudents();
+      const countElement = document.getElementById('selected-count');
+      countElement.textContent = selectedStudents.length;
+    }
+
+    // Function to display students in the student-list div
+    function displayStudents() {
+  const studentListDiv = document.getElementById('student-list');
+  const students = loadStudents();
+  const selectedStudents = loadSelectedStudents();
+
+  studentListDiv.innerHTML = ''; // Clear the list
+
+  students.forEach(student => {
+    const studentDiv = document.createElement('div');
+    studentDiv.className = 'student-item';
+    studentDiv.textContent = student;
+
+    if (selectedStudents.includes(student)) {
+      studentDiv.classList.add('selected');
+    }
+
+    studentDiv.addEventListener('click', function () {
+      toggleSelection(student, studentDiv);
+    });
+
+    studentListDiv.appendChild(studentDiv);
+  });
+
+  updateSelectedCount();
+}
+    // Function to toggle selection of a student
+    function toggleSelection(student, studentDiv) {
+      let selectedStudents = loadSelectedStudents();
+
+      if (selectedStudents.includes(student)) {
+        selectedStudents = selectedStudents.filter(s => s !== student);
+        studentDiv.classList.remove('selected');
+      } else {
+        selectedStudents.push(student);
+        studentDiv.classList.add('selected');
+      }
+
+      saveSelectedStudents(selectedStudents);
+      updateSelectedCount();
+    }
+
+    // Randomize array of students
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // Function to group students into teams
+function createTeams(numTeams) {
+  const selectedStudents = loadSelectedStudents();
+  const shuffleAnimationDiv = document.getElementById('shuffle-animation');
+  const shuffleSound = document.getElementById('shuffle-sound')
+  const teamSound = document.getElementById('team-sound');
+  
+  const groupsDiv = document.getElementById('groups');
+
+  if (selectedStudents.length === 0) {
+    buttons.forEach(button => button.disabled = true); 
+    return;
+  }
+
+  // Show shuffle animation and hide groups
+  shuffleAnimationDiv.classList.remove('hidden');
+  
+  teamSound.play();
+  groupsDiv.innerHTML = ''; // Clear groups display
+
+  // Shuffle students after a 2-second delay to show the animation
+  setTimeout(() => {
+    const shuffledStudents = shuffleArray([...selectedStudents]);
+    const teams = Array.from({ length: numTeams }, () => []);
+
+    shuffledStudents.forEach((student, index) => {
+      teams[index % numTeams].push(student);
+    });
+
+    // Hide shuffle animation and display the teams
+    shuffleAnimationDiv.classList.add('hidden');
+    displayTeams(teams);
+    shuffleSound.play();
+
+  }, 4000); // 3 seconds delay
+}
+
+    // Function to display the teams
+    function displayTeams(teams) {
+      const groupsDiv = document.getElementById('groups');
+      groupsDiv.innerHTML = ''; // Clear previous groups
+
+      teams.forEach((team, index) => {
+        const teamDiv = document.createElement('div');
+        teamDiv.classList.add('team');
+        teamDiv.innerHTML = `<h3>Team ${index + 1}</h3><ul>${team.map(student => `<li>${student}</li>`).join('')}</ul>`;
+        groupsDiv.appendChild(teamDiv);
+      });
+    }
+
+
+    // Event listeners for the buttons
+    document.getElementById('btn-2-teams').addEventListener('click', function () {
+      createTeams(2);
+    });
+
+    document.getElementById('btn-3-teams').addEventListener('click', function () {
+      createTeams(3);
+    });
+
+    document.getElementById('btn-4-teams').addEventListener('click', function () {
+      createTeams(4);
+    });
+
+    document.getElementById('btn-5-teams').addEventListener('click', function () {
+      createTeams(5);
+    });
+
+    // Display the students when the page loads
+    document.addEventListener('DOMContentLoaded', displayStudents);
+
+
+    document.getElementById('load-student-page').addEventListener('click', function () {
+      window.location.href = 'index.html'; // Navigate to the index.html page
+    });
+    document.getElementById('select-student-page').addEventListener('click', function () {
+      window.location.href = 'select-student.html'; // Navigate to the index.html page
+    });
+
+    // Function to generate a random color in hex format
+function getRandomColor() {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+// Function to generate a random bright color in hex format
+function getRandomBrightColor() {
+  // Generate random colors with higher brightness
+  const r = Math.floor(Math.random() * 128) + 128; // 128-255 for red
+  const g = Math.floor(Math.random() * 128) + 128; // 128-255 for green
+  const b = Math.floor(Math.random() * 128) + 128; // 128-255 for blue
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
+// Function to display the teams with bright colors
+function displayTeams(teams) {
+  const groupsDiv = document.getElementById('groups');
+  groupsDiv.innerHTML = ''; // Clear previous groups
+
+  teams.forEach((team, index) => {
+    const teamDiv = document.createElement('div');
+    teamDiv.classList.add('team');
+    teamDiv.style.backgroundColor = getRandomBrightColor(); // Set random bright color
+    teamDiv.style.color = '#000'; // Ensure text color is black for contrast
+    teamDiv.innerHTML = `
+      <h3>Team ${index + 1}</h3>
+      <ul>${team.map(student => `<li>${student}</li>`).join('')}</ul>
+    `;
+    groupsDiv.appendChild(teamDiv);
+  });
+}
+
+
+  </script>
+  </body>
+  </html>
